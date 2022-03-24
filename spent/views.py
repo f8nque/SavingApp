@@ -522,7 +522,6 @@ class UpdateBudgetItemView(LoginRequiredMixin,View):
     form_class = BudgetItemForm
     def get(self, request,id, *args, **kwargs):
         user = User.objects.get(username=self.request.user)
-        user_id = user.id
         budgetItem = BudgetItem.objects.get(pk=id)
         form = BudgetItemForm(user,instance=budgetItem)
         return render(request, self.template_name, {'form': form})
