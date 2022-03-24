@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spent | Delete Spent Form</title>
+</head>
+<body>
+<h1> Are You Sure You Want To Delete The Following Spent???</h1>
+<form action="{% url 'delete_spent' obj.id %}" method="post">
+  {% csrf_token %}
+  <label>{{obj.date}}</label><br/>
+    <label>{{obj.category_id}}</label><br/>
+    <label>{{obj.amount}}</label><br/>
+    <input type="submit" value="do not delete" name="delete">
+  <input type="submit" value="delete" name="delete"/>
+
+</form>
+
+</body>
+</html>

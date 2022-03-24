@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+ {% load crispy_forms_tags %}
+{% block title %} Spent | Add Spent {% endblock title%}
+
+{% block content %}
+<h1 class="text-center text-primary font-weight-bold">SPENDING PAGE</h1>
+<hr/>
+<form action="{% url 'add_spent'%}" method="post">
+    {% csrf_token %}
+    {{form |crispy}}
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
+
+{% endblock content %}

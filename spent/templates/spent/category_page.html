@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %} Category | CategoryRegistration {%endblock title %}
+
+{%block content %}
+<h1 class="text-center text-primary font-weight-bold">CATEGORY PAGE</h1>
+<hr/>
+{% load crispy_forms_tags %}
+<form action="" method="post">
+  {% if error %}
+    <div class="alert alert-danger">
+        {{error }}
+    </div>
+{% endif %}
+  {% csrf_token%}
+  {{ form |crispy }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock content %}
+
+

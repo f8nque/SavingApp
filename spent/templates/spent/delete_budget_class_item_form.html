@@ -1,0 +1,12 @@
+{%extends "base.html" %}
+{% block title %} Category | Delete Class Item {%endblock title %}
+{% block content %}
+<form action="{%url 'delete_class_item' obj.id %}" method="post">
+  {% csrf_token %}
+    <label> name : <span class="badge badge-primary">{{obj.name}}</span></label><br/>
+    <label>Category <span class="badge badge-primary">{{obj.budget_category}}</span></label><br/>
+    <input type="submit" value="do not delete" name="delete" class="btn btn-primary">
+  <input type="submit" value="delete" name="delete" class="btn btn-danger"/>
+</form>
+
+{% endblock content %}

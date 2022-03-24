@@ -1,0 +1,22 @@
+{% extends "base.html"%}
+{% block title %} Tracking | Tracker List {%endblock title %}
+{% block content %}
+<h1 class="text-center text-primary font-weight-bold">TRACKER GENERATOR</h1>
+<hr/>
+<h4>Track: Date From -{{track.start_date}}</h4>
+<h4>Track: Date To -{{track.end_date}}</h4>
+<h4>Track: Amount -{{track.amount}}</h4>
+
+<table class="table table-sm table-striped">
+  <tr class="thead-dark">
+    <th>No</th><th>Category Being Tracked</th>
+  </tr>
+  {% for tracker in trackers %}
+    <tr>
+      <td>{{forloop.counter}}</td><td>{{tracker.category_id.category}}</td>
+    </tr>
+
+  {% endfor %}
+</table>
+
+{% endblock content %}

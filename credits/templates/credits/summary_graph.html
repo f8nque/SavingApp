@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{%block title %} Credit | Debt History{% endblock title %}
+{% block head %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+{% endblock head %}
+
+{% block content %}
+<h3 class="text-center text-success font-weight-bold">SPENT SUMMARY FOR THE TRACK FROM {{track.start_date}} TO {{track.end_date}} </h3>
+
+
+
+
+
+<div class="mx-0 text-secondary font-weight-bold">
+    <p>
+   	The Summary show below how you have been spending your money.
+
+    </p>
+</div>
+
+
+
+
+<div class="row">
+    <div class="col-lg-7 "  id="top5bar" style="height:600px"></div>
+    <div class="col-lg-5 "  id="top5pie" style="height:600px"></div>
+</div>
+<div class="row">
+    <div id="bottom5bar" class="col-lg-7 " style="height:600px"></div>
+    <div id="bottom5pie" class="col-lg-5 " style="height:600px"></div>
+</div>
+
+<div class="row">
+    <div id="allcolumnchart" style="height:1000px; width:100%;" ></div>
+</div>
+
+
+
+<script>
+    google.charts.load('current',{packages:['corechart']});
+    google.charts.setOnLoadCallback(top5BarChart);
+    google.charts.setOnLoadCallback(top5PieChart);
+    google.charts.setOnLoadCallback(bottom5PieChart);
+    google.charts.setOnLoadCallback(botton5BarChart);
+    google.charts.setOnLoadCallback(allColumnChart);
+
+
+
+    function top5BarChart(){
+        let data = new google.visualization.DataTable();
+        data.addColumn({id:'category',type:'string',label:'Category'});
+        data.addColumn({id:'total',type:'number',label:'Total Spent'});
+        data.addColumn({type:'string',role:'annotation'});
+        //data.addColumn({type:'string',role:'style'})
+     /*   data.addRow(["SUPPER",{{hts_overall.monthly.positive}},'{{hts_overall.monthly.positive}}','red']);
+        data.addRow(["Home",{{hts_overall.monthly.enrolled}},'{{hts_overall.monthly.enrolled}}','green']);
+        data.addRow(["Supermarket",{{hts_overall.monthly.art}},'{{hts_overall.monthly.art}}','blue']); */
+        {% for data in top %}
+            data.addRow(["{{data.category}}",{{data.amount_spent}},'{{data.amount_spent}}'])
+        {% endfor %}
+        let options = {
+                title: 'Top 5 Spent Analysis for Track {{track.start_date}} AND {{track.end_date}}',
+                vAxis: {title: 'AMOUNT SPENT'},
+                hAxis: {title: 'CATEGORY'},
+                legend: 'none'
+                };
+        // Draw
+        let chart = new google.visualization.BarChart(document.getElementById('top5bar'));
+        chart.draw(data, options);
+    }
+
+        function top5PieChart(){
+        let data = new google.visualization.DataTable();
+        data.addColumn({id:'category',type:'string',label:'Category'});
+        data.addColumn({id:'total',type:'number',label:'Amount Spent'});
+        data.addColumn({type:'string',role:'annotation'});
+
+        /*
+        data.addRow(["HTS_POS",{{hts_overall.quarterly.positive}},'{{hts_overall.quarterly.positive}}','red']);
+        data.addRow(["Enrolled",{{hts_overall.quarterly.enrolled}},'{{hts_overall.quarterly.enrolled}}','green']);
+        data.addRow(["TX_NEW",{{hts_overall.quarterly.art}},'{{hts_overall.quarterly.art}}','blue']);
+        */
+
+        {% for data in top %}
+            data.addRow(["{{data.category}}",{{data.amount_spent}},'{{data.amount_spent}}'])
+        {% endfor %}
+        let options = {
+                title: 'Top 5 Pie Chart BETWEEN {{track.start_date}} AND {{track.end_date}}',
+                };
+        // Draw
+        let chart = new google.visualization.PieChart(document.getElementById('top5pie'));
+        chart.draw(data, options);
+    }
+
+
+    function botton5BarChart(){
+        let data = new google.visualization.DataTable();
+        data.addColumn({id:'category',type:'string',label:'Category'});
+        data.addColumn({id:'total',type:'number',label:'Total Spent'});
+        data.addColumn({type:'string',role:'annotation'});
+       // data.addColumn({type:'string',role:'style'})
+     /*   data.addRow(["SUPPER",{{hts_overall.monthly.positive}},'{{hts_overall.monthly.positive}}','red']);
+        data.addRow(["Home",{{hts_overall.monthly.enrolled}},'{{hts_overall.monthly.enrolled}}','green']);
+        data.addRow(["Supermarket",{{hts_overall.monthly.art}},'{{hts_overall.monthly.art}}','blue']); */
+
+    {% for data in bottom %}
+            data.addRow(['{{data.category}}',{{data.amount_spent}},'{{data.amount_spent}}'])
+        {% endfor %}
+
+
+
+        let options = {
+                title: 'Bottom 5 Spent Analysis for Track {{track.start_date}} AND {{track.end_date}}',
+                vAxis: {title: 'AMOUNT SPENT'},
+                hAxis: {title: 'CATEGORY'},
+                legend: 'none'
+                };
+        // Draw
+        let chart = new google.visualization.BarChart(document.getElementById('bottom5bar'));
+        chart.draw(data, options);
+    }
+
+        function bottom5PieChart(){
+        let data = new google.visualization.DataTable();
+        data.addColumn({id:'category',type:'string',label:'Category'});
+        data.addColumn({id:'total',type:'number',label:'Amount Spent'});
+        data.addColumn({type:'string',role:'annotation'});
+
+        /*
+        data.addRow(["HTS_POS",{{hts_overall.quarterly.positive}},'{{hts_overall.quarterly.positive}}','red']);
+        data.addRow(["Enrolled",{{hts_overall.quarterly.enrolled}},'{{hts_overall.quarterly.enrolled}}','green']);
+        data.addRow(["TX_NEW",{{hts_overall.quarterly.art}},'{{hts_overall.quarterly.art}}','blue']);
+        */
+
+        {% for data in bottom %}
+            data.addRow(["{{data.category}}",{{data.amount_spent}},'{{data.amount_spent}}'])
+        {% endfor %}
+
+        let options = {
+                title: 'Bottom 5 Pie Chart BETWEEN {{track.start_date}} AND {{track.end_date}}',
+                };
+        // Draw
+        let chart = new google.visualization.PieChart(document.getElementById('bottom5pie'));
+        chart.draw(data, options);
+    }
+
+
+
+    function allColumnChart(){
+        let data = new google.visualization.DataTable();
+        data.addColumn({id:'category',type:'string',label:'Category'});
+        data.addColumn({id:'total',type:'number',label:'Total Spent'});
+        data.addColumn({type:'string',role:'annotation'});
+        //data.addColumn({type:'string',role:'style'})
+     /*   data.addRow(["SUPPER",{{hts_overall.monthly.positive}},'{{hts_overall.monthly.positive}}','red']);
+        data.addRow(["Home",{{hts_overall.monthly.enrolled}},'{{hts_overall.monthly.enrolled}}','green']);
+        data.addRow(["Supermarket",{{hts_overall.monthly.art}},'{{hts_overall.monthly.art}}','blue']); */
+
+        {% for data in graph %}
+            data.addRow(["{{data.category}}",{{data.amount_spent}},'{{data.amount_spent}}'])
+        {% endfor %}
+
+
+        let options = {
+                title: 'All Category Analysis for Track {{track.start_date}} AND {{track.end_date}}',
+                vAxis: {title: 'AMOUNT SPENT'},
+                hAxis: {title: 'CATEGORY'},
+                legend: 'none'
+                };
+        // Draw
+        let chart = new google.visualization.BarChart(document.getElementById('allcolumnchart'));
+        chart.draw(data, options);
+    }
+</script>
+{% endblock content %}

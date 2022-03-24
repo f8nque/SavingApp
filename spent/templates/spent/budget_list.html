@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}
+Budget  | Budget List
+{% endblock title %}
+{% block content %}
+<div class="container-fluid px-1 py-5 mx-auto">
+	<div class="text-center">
+            <h3>BUDGET LIST</h3>
+            <p class="blue-text">A list of all the budget  <br> with summary.</p>
+				<div class="card m-0 p-0">
+				<table class="table table-hover table-boardered ">
+				  <thead>
+					<tr>
+					  <th scope="col">#</th>
+					  <th scope="col">Budget Name</th>
+                        <th scope="col">Budget Description</th>
+					  <th scope="col">Budget Amount</th>
+					  <th scope="col">Amount Spend</th>
+					  <th scope="col">Remaining Budget</th>
+					  <th scope="col">Budget Status</th>
+					</tr>
+				  </thead>
+				  <tbody>
+                  {% for data in datalist %}
+					<tr>
+					  <th scope="row">{{forloop.counter}}</th>
+					  <td>{{data.name}}</td>
+                        <td>{{data.description}}</td>
+					  <td>{{data.budget_total}}</td>
+					  <td>{{data.total_spent}}</td>
+					  <td>{{data.remaining_budget}}</td>
+					  <td  {%if data.budget_status == "on budget" %} then class="h3 badge badge-primary" {% else %} class="h3 badge badge-danger" {%endif %}>
+                        {{data.budget_status}}</td>
+					  <td><a class="badge badge-success mr-1"  href="{%url 'budget_view' data.id%}">View</a></td>
+					   <td><a class="badge badge-primary mr-1"  href="{%url 'update_budget' data.id%}">update</a></td>
+					   <td><a class="badge badge-danger" href="{% url 'delete_budget' data.id %}">delete</a></td>
+					</tr>
+                  {% endfor %}
+				  </tbody>
+				</table>
+				</div> <!-- end card div -->
+            </div> <!-- end format div -->
+      </div> <!-- end container fluid -->
+{% endblock content%}

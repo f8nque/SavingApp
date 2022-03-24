@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+  {% load crispy_forms_tags %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{%static 'bootstrap.min.js'%}"></script>
+    <link rel="stylesheet" href="{% static 'spent/main.css' %}"/>
+
+    <title>{% block title %} {% endblock title%}</title>
+    {% block head %} {% endblock head %}
+</head>
+{% block navbar %} {%endblock navbar%}
+<header>
+    <nav class="nav nav-tabs">
+    <a class=" nav-item nav-link" href="/">Home</a>
+    <div class ="dropdown">
+        <a class="nav-item nav-link dropdown-toggle" id="categoryDropDown"
+                    data-toggle="dropdown"            aria-haspopup="true" aria-expanded="false"
+                                href="#">Category</a>
+        <div class="dropdown-menu" aria-labelledby="categoryDropDown">
+            <a class="dropdown-item" href="{% url 'add_category'%}">Add Category</a>
+            <a class="dropdown-item" href="{% url 'category_list'%}">Category List</a>
+        </div>
+    </div>
+
+    <div class="dropdown">
+         <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown"
+          id="spentDropDown" aria-haspopup="true" aria-expanded="false"   href="#">Spent</a>
+        <div class="dropdown-menu" aria-labelledby="spentDropDown">
+            <a class="dropdown-item" href="{% url 'add_spent'%}">Add Spent</a>
+            <a class="dropdown-item" href="{% url 'daily_list'%}">Daily List</a>
+            <a class="dropdown-item" href="{% url 'monthly_list'%}">Monthly List</a>
+            <a class="dropdown-item" href="{% url 'all_spents'%}">All Spent</a>
+        </div>
+    </div>
+    <div class="dropdown">
+         <a class="nav-item nav-link dropdown-toggle"
+            data-toggle="dropdown"
+          id="reportsDropDown" aria-haspopup="true" aria-expanded="false"        href="#Trackings">Tracking</a>
+        <div class="dropdown-menu" aria-labelledby="reportsDropDown">
+            <a class="dropdown-item" href="{% url 'savings_list'%}">Savings List</a>
+            <a class="dropdown-item" href="{%url 'create_track'%}">Create a new Track</a>
+            <a class="dropdown-item" href="{%url 'create_tracking'%}">Generate Trackers</a>
+            <a class="dropdown-item" href="{%url 'track_list'%}">TrackList</a>
+            <a class="dropdown-item" href="{%url 'tracking_list'%}">BudgetSpentList</a>
+        </div>
+    </div>
+
+    <div class="dropdown">
+         <a class="nav-item nav-link dropdown-toggle"
+            data-toggle="dropdown"
+          id="reportsDropDown" aria-haspopup="true" aria-expanded="false"        href="#Trackings">Debt Service</a>
+        <div class="dropdown-menu" aria-labelledby="reportsDropDown">
+            <a class="dropdown-item" href="{% url 'debt_registration'%}">Debt Registration</a>
+            <a class="dropdown-item" href="{%url 'debt_service'%}">Debt Service</a>
+            <a class="dropdown-item" href="{%url 'debt_list'%}">Debt History</a>
+        </div>
+    </div>
+        <div class="dropdown">
+         <a class="nav-item nav-link dropdown-toggle"
+            data-toggle="dropdown"
+          id="budget" aria-haspopup="true" aria-expanded="false"        href="#Trackings">Budgets</a>
+        <div class="dropdown-menu" aria-labelledby="budget">
+
+            <a class="dropdown-item" href="{%url 'add_budget'%}">Create Budget</a>
+            <a class="dropdown-item" href="{%url 'budget_list'%}">Budget List</a>
+            <hr/>
+            <a class="dropdown-item" href="{% url 'add_budget_category'%}">Create Budget Category</a>
+            <a class="dropdown-item" href="{%url 'budget_category_list'%}">Budget Category List</a>
+
+            <hr/>
+            <a class="dropdown-item" href="{%url 'add_class_item'%}">Create Class Item</a>
+            <a class="dropdown-item" href="{%url 'class_item_list'%}">Budget Class Item List</a>
+            <a class="dropdown-item" href="{%url 'add_budget_item'%}">Create Budget Item</a>
+            <a class="dropdown-item" href="{%url 'budget_item_list' %}">Budget Item List</a>
+        </div>
+    </div>
+        <a class="nav-item nav-link ml-auto" href="{% url 'logout'%}">Logout</a>
+
+</nav>
+</header>
+
+
+<body class="container-fluid">
+{%block content %}
+
+{%endblock content %}
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %} Category | CategoryRegistration {%endblock title %}
+
+{%block content %}
+<h1 class="text-center text-primary font-weight-bold">UPDATE BUDGET CLASS ITEM FORM</h1>
+<hr/>
+<div class="container-fluid px-1 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+            <h3>UPDATE BUDGET CLASS ITEM</h3>
+            <p class="blue-text">update a new Budget class Item <br> to capture constant budget items.</p>
+            <div class="card m-0 p-0">
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{error }}
+                    </div>
+                {% endif %}
+                <h5 class="text-center mb-4">Budget Class Item Form</h5>
+                <form class="form-card" action="" method="post">
+                    {% csrf_token %}
+                    <div class="justify-content-between text-left">
+                        <div class="form-group flex-column d-flex">
+                        	<label class="form-control-label px-3" for="{{form.name.id_for_label}}">
+                        		Name of the Individual Item in the Budget<span class="text-danger"> *</span>
+                        	</label>
+                        	{{form.name}} </div>
+                     <div class="form-group flex-column d-flex">
+                        <label class="form-control-label px-3" for="{{form.description.id_for_label}}">
+                        Budget Major Category
+                        <span class="text-danger"> *</span></label>
+                          {{form.budget_category}}
+                        </div>
+                    </div>
+
+
+                    <div class=" justify-content-end">
+                        <div class="form-group"> <button type="submit" class="btn-block btn-primary ">Update Class Item</button> </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

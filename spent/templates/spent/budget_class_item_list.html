@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}
+Budget  | Class Item List
+{% endblock title %}
+{% block content %}
+<div class="container-fluid px-1 py-5 mx-auto">
+	<div class="text-center">
+            <h3>BUDGET CLASS ITEM LIST</h3>
+            <p class="blue-text">A list of all the budget  <br> with summary.</p>
+				<div class="card m-0 p-0">
+				<table class="table table-hover table-boardered ">
+				  <thead>
+					<tr>
+					  <th scope="col">#</th>
+					  <th scope="col">Class Item Name</th>
+                        <th scope="col">Group Category</th>
+					</tr>
+				  </thead>
+				  <tbody>
+                  {% for data in datalist %}
+					<tr>
+					  <th scope="row">{{forloop.counter}}</th>
+					  <td>{{data.name}}</td>
+                        <td>{{data.budget_category}}</td>
+					   <td><a class="badge badge-primary mr-1"  href="{%url 'update_class_item' data.id%}">update</a></td>
+					   <td><a class="badge badge-danger" href="{% url 'delete_class_item' data.id %}">delete</a></td>
+					</tr>
+                  {% endfor %}
+				  </tbody>
+				</table>
+				</div> <!-- end card div -->
+            </div> <!-- end format div -->
+      </div> <!-- end container fluid -->
+{% endblock content%}

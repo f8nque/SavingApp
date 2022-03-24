@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %} Budget | Create Budget Category {%endblock title %}
+
+{%block content %}
+<h1 class="text-center text-primary font-weight-bold">CATEGORY PAGE</h1>
+<hr/>
+{% load crispy_forms_tags %}
+<div class="container-fluid px-1 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+            <h3>BUDGET CATEGORY FORM</h3>
+            <p class="blue-text">Adds a new Budget Category <br> for a broad grouping of budget items.</p>
+            <div class="card m-0 p-0">
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{error }}
+                    </div>
+                {% endif %}
+                <h5 class="text-center mb-4">Budget Category</h5>
+                <form class="form-card" action="" method="post">
+                {% csrf_token%}
+                <div class="justify-content-between text-left">
+                        <div class="form-group  flex-column d-flex">
+                        	<label class="form-control-label px-3">
+                        		Budget Category Name<span class="text-danger"> *</span>
+                        	</label>
+                            {{form.name}}
+                        </div>
+                    </div>
+                    <div class=" justify-content-between text-left">
+                    <div class="form-group  flex-column d-flex">
+                        	<label class="form-control-label px-3" for="{{form.priority.id_for_label}}">
+                        		Category Priority<span class="text-danger"> *</span>
+                        	</label>
+                        	<select class="form-group form-control" name="{{form.priority.html_name}}" id="{{form.priority.id_for_label}}">
+                         	<option value="1">Priority 1</option>
+                         	<option value="2">Priority 2</option>
+                         	<option value="3">Priority 3</option>
+                         	<option value="4">Priority 4</option>
+                         	<option value="5">Priority 5</option>
+                         	<option value="6">Priority 6</option>
+                         	<option value="7">Priority 7</option>
+                         	<option value="8">Priority 8</option>
+                         	<option value="9">Priority 9</option>
+                         	<option value="10">Priority 10</option>
+                         </select>
+                        </div>
+                    <div class="justify-content-around">
+                        <div class="form-group"> <button type="submit" class="btn-block btn-primary">Create A Budget Category</button> </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}

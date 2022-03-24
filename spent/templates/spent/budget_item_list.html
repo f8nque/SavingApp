@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}
+Budget  | Class Item List
+{% endblock title %}
+{% block content %}
+<div class="container-fluid px-1 py-5 mx-auto">
+	<div class="text-center">
+            <h3>BUDGET  ITEM LIST</h3>
+            <p class="blue-text">A list of all the budget items.</p>
+				<div class="card m-0 p-0">
+					<div>
+				  <form  action="" method="post">
+					{% csrf_token %}
+					<span class="font-weight-bold text-secondary">Choose a Budget to display</span>
+					<select name="budget" id="budget" class="bg-primary text-white m-3">
+					  {% for budget in budgets %}
+						<option value="{{budget.id}}">{{budget.name}}</option>
+					  {% endfor %}
+					</select>
+					<button type="submit" class="btn btn-outline-primary m-3">filter</button>
+				  </form>
+				  </div>
+				<table class="table table-hover table-boardered ">
+				  <thead>
+					<tr>
+					  <th scope="col">#</th>
+					  <th scope="col">Budget </th>
+                        <th scope="col">Budget Class Item</th>
+						<th scope="col">Amount</th>
+					</tr>
+				  </thead>
+				  <tbody>
+                  {% for data in datalist %}
+					<tr>
+					  <th scope="row">{{forloop.counter}}</th>
+					  <td>{{data.budget}}</td>
+                        <td>{{data.budget_class_item}}</td>
+						<td>{{data.amount}}</td>
+					   <td><a class="badge badge-primary mr-1"  href="{%url 'update_budget_item' data.id%}">update</a></td>
+					   <td><a class="badge badge-danger" href="{% url 'delete_budget_item' data.id %}">delete</a></td>
+					</tr>
+                  {% endfor %}
+				  </tbody>
+				</table>
+				</div> <!-- end card div -->
+            </div> <!-- end format div -->
+      </div> <!-- end container fluid -->
+{% endblock content%}

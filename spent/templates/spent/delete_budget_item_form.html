@@ -1,0 +1,13 @@
+{%extends "base.html" %}
+{% block title %} Budget | Delete Budget Item {%endblock title %}
+{% block content %}
+<form action="{%url 'delete_budget_item' obj.id %}" method="post">
+  {% csrf_token %}
+    <label>Track : <span class="badge badge-primary">{{obj.budget}}</span></label><br/>
+    <label>Budget Class Item <span class="badge badge-primary">{{obj.budget_class_item}}</span></label><br/>
+    <label>Amount <span class="badge badge-primary">{{obj.amount}}</span></label><br/>
+    <input type="submit" value="do not delete" name="delete" class="btn btn-primary">
+  <input type="submit" value="delete" name="delete" class="btn btn-danger"/>
+</form>
+
+{% endblock content %}

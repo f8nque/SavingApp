@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{%block title %} Credit | Debt Summary{% endblock title %}
+
+{% block content %}
+<h3 class="text-success font-weight-bold">DEBT SUMMARY LIST</h3>
+<h4>Total Debt Owed <span class="badge badge-pill badge-danger">{{debt}}</span></h4>
+<table class="table table-responsive">
+<tr class="table-head">
+	<th>No</th>
+	<th>Credit Date</th>
+	<th>Credit Agency</th>
+	<th>Amount</th>
+	<th>Debt Service Date</th>
+	<th>Amount Paid</th>
+	<th>Comment</th>
+	<th>Paying Status</th>
+	<th>Service Status</th>
+
+</tr>
+
+{% for dat in data %}
+<tr>
+<td>{{forloop.counter}}</td>
+<td>{{dat.credit_date}}</td>
+<td>{{dat.credit_agency}}</td>
+<td>{{dat.amount}}</td>
+<td>{{dat.credit_service_date}}</td>
+<td>{{dat.amount_paid}}</td>
+<td>{{dat.comment}}</td>
+<td {% if dat.paying_status == 'Overdue'%} class="font-weight-bold text-danger" {%endif%}>{{dat.paying_status}}</td>
+<td {% if dat.service_status == 'Fully Paid'%} class="font-weight-bold text-success" {%endif%} >{{dat.service_status}}</td>
+<td><a href="{% url 'update_debt_registration' dat.id %}" class="badge badge-pill badge-primary">update</a></td>
+<td><a href="{%url 'delete_debt_registration' dat.id %}" class="badge badge-pill badge-danger">delete</a></td>
+<td><a href="{% url 'debt_history' dat.id %}"  class="badge badge-success">history</a></td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+{% endblock content %}

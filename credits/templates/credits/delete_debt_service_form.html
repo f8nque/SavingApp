@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{%block title %} Credit | Delete Service {% endblock title %}
+{% block content %}
+<h1> Are You Sure You Want To Delete The Following Spent???</h1>
+<form action="{% url 'delete_debt_service' obj.id %}" method="post">
+  {% csrf_token %}
+  <label>{{obj.service_date}}</label><br/>
+    <label>{{obj.amount}}</label><br/>
+    <label>{{obj.comment}}</label><br/>
+    <input type="submit" value="do not delete" name="delete">
+  <input type="submit" value="delete" name="delete"/>
+
+</form>
+
+{% endblock content %}

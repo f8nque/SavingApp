@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{%block title %} Credit | Debt Service{% endblock title %}
+{% block content %}
+<h3 class="text-success font-weight-bold">DEBT SERVICING FORM</h3>
+<p class="text-secondary"> This form is used for paying debt owed</p>
+<div>
+<form action="" method="post">
+    {% csrf_token %}
+    {% if errors %}
+			<div class="alert alert-danger">{{errors}}</div>
+	{% endif %}
+	<div class="form-group">
+	    {% if form.debt_id.errors %}
+			    <div class="alert alert-danger">{{form.debt_id.errors}}</div>
+			{% endif %}
+		<label for="debt_id" class="form-control-label">Debt To be Serviced</label>
+		{{form.debt_id}}
+	</div>
+
+	<div class="row">
+		<div class="form-group col-md-6">
+			{% if form.service_date.errors %}
+			    <div class="alert alert-danger">{{form.service_date.errors}}</div>
+			{% endif %}
+			<label for="reg_date" class="form-control-label"> Debt Service Date </label>
+			{{form.service_date}}
+			<!--<input class="form-control" type ="date" id="reg_date" name="reg_date" value=""/> -->
+		</div>
+
+		<div class="form-group col-md-6">
+			{% if form.amount.errors %}
+			    <div class="alert alert-danger">{{form.amount.errors}}</div>
+			{% endif %}
+			<div class="row">
+			<div class="text-secondary col-6">Amount Paid so far  </div>
+			<div class="text-secondary col-6">Amount Remaining  </div>
+			</div>
+			<label for="amount" class="form-control-label"> Amount Paid</label>
+			{{form.amount}}
+			<!--<input class="form-control" type ="number" id="amount" name="amount" value=""/> -->
+			<div class="text-danger">Debt Sum</div>
+		</div>
+	</div> <!-- Debt Service date and Amount Paid back -->
+
+
+	<div class="form-group">
+	    {% if form.comment.errors %}
+			    <div class="alert alert-danger">{{form.comment.errors}}</div>
+			{% endif %}
+		<label for="comment" class="form-control-label"> Comment </label>
+		{{form.comment}}
+		<!-- <textarea col=12 name="comment" id="comment" class="form-control">	</textarea> -->
+	</div>
+
+	<div>
+		<button type="submit" class="btn btn-outline-primary" > Submit </button>
+	</div>
+</form>
+
+</div>
+
+
+{% endblock content%}

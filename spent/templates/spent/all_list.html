@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{%block title %} Spent | monthly Summary{% endblock title %}
+
+{% block content %}
+<h1 class="text-center text-primary font-weight-bold">ALL SPENTS LIST</h1>
+<hr/>
+<h3>Totals : {{totals}}</h3><span></span>Budget Amount : {{budget_amount}} <span>Spent Amount : {{spent_amount}}</span> <span>Remaining amount is : {{remaining_amount}}</span>
+<br/>
+
+<table class="table table-stripped table-sm">
+  <tr class="thead-dark">
+    <th>No</th><th>Date</th> <th>day</th><th>Total Amount</th>
+  </tr>
+  {%for dat in data %}
+  <tr>
+    <td>{{forloop.counter}}</td><td>{{dat.0}}</td><td>{{dat.0|date:"l" }}</td><td>{{dat.1}}</td>
+      <td><a href="{% url 'specific_day' dat.0 %}">view</a></td>
+      <td><a href="{% url 'delete_bunch' dat.0%}">delete</a></td>
+  </tr>
+    {% endfor %}
+</table>
+{% endblock content %}

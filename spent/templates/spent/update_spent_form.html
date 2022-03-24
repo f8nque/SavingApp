@@ -1,0 +1,17 @@
+{%extends "base.html"%}
+{% load crispy_forms_tags %}
+{% block title %} Spent | UpdateSpent {%endblock title %}
+{% block content %}
+<h1 class="text-center text-primary font-weight-bold">UPDATE FORM</h1>
+<hr/>
+<form action="" method="post">
+    {% csrf_token %}
+    {% if error %}
+        <div class="alert alert-danger">
+            {{error }}
+        </div>
+    {% endif %}
+  {{form|crispy }}
+  <button type="submit" class="btn btn-primary">Update</button>
+</form>
+{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %} Tracking | Budget Tracking List {% endblock title %}
+{% block content %}
+<h1 class="text-center text-primary font-weight-bold">TRACKINGS LIST</h1>
+<hr/>
+<table class="table table-sm table-striped">
+  <tr class="thead-dark">
+    <th>No</th><th>Track:StartDate</th><th>Track:EndDate</th><th>Target Amount</th>
+    <th>Spent:Date</th><th>Spent:Category</th><th>Amount</th>
+  </tr>
+  {% for data in object_list%}
+  <tr>
+    <td>{{forloop.counter}}</td>
+    <td>{{data.track_id.start_date}}</td>
+    <td>{{data.track_id.end_date}}</td>
+    <td>{{data.track_id.amount}}</td>
+    <td>{{data.spent_id.date}}</td>
+    <td>{{data.spent_id.category_id}}</td>
+    <td>{{data.spent_id.amount}}</td>
+  </tr>
+
+  {%endfor%}
+</table>s
+
+{% endblock content %}

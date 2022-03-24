@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %} Spent | DeleteBunch {% endblock title %}
+{% block content %}
+<h1 class="text-center text-primary font-weight-bold">Select Spent Items to Delete</h1>
+<hr/>
+<form action="" method="post">
+  {% csrf_token %}
+  <table>
+    {% for dat in data %}
+    <tr>
+      <td><input type="checkbox" value="{{dat.id}}" name="delete_ids" checked> </td>
+      <td>{{dat.date}}</td>
+      <td>{{dat.category_id}}</td>
+      <td>{{dat.amount}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <button type ="submit" class="btn btn-primary mt-3">Delete Selected</button>
+</form>
+
+{%endblock content %}

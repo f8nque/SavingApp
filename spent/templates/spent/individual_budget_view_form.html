@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %} Budget | Create Budget Item {%endblock title %}
+
+{%block content %}
+<div class="container-fluid px-1 py-5 mx-auto">
+	<div class="text-center">
+            <h2>{{budgetdata.name}}</h2>
+            <p class="h3 blue-text">{{budgetdata.description}}</p>
+
+            <ul class="list-unstyled d-flex flex-column">
+            	<li class="h4 ">Budget Name: <span class="badge badge-primary title">{{budgetdata.name}}</span></li>
+            	<li class="h4">Track Date from <span class="badge badge-primary">{{budgetdata.start_date}} </span> To <span class="badge badge-primary">{{budgetdata.end_date}}</span></li>
+            	<li class="h4">Budget Amount: <span class="badge badge-success">{{budgetdata.budget_total}}</span></li>
+            	<li class="h4">Budget Spent: <span class="badge badge-secondary">{{budgetdata.total_spent}}</span></li>
+            	<li class="h4">Remaining Budget: <span class="badge badge-danger">{{budgetdata.remaining_budget}}</span></li>
+				<li class="h4">Budget Status: <span {% if budgetdata.budget_status == "on budget" %} class="badge badge-success" {%else%} class="badge badge-danger" {%endif%}>{{budgetdata.budget_status}}</span></li>
+
+            </ul>
+				<div class="card m-0 p-0">
+				<table class="table table-sm table-hover">
+				  <tbody>
+                  {% for group in groupdata %}
+				  	<tr>
+					  <th scope="col" class="text-left text-white h5 bg-secondary" colspan="3">{{group.category}}</th>
+					  <th scope="col" class="text-left text-white  h5 bg-secondary">Budget Amount <span class="badge badge-primary">{{group.budget_total}}</span></th>
+					  <th scope="col" class="text-left text-white h5 bg-secondary">Budget Spent <span class="badge badge-success">{{group.spent_total}}</span></th>
+					  <th scope="col" class="text-left text-white h5 bg-secondary">Remaining Amount <span class="badge badge-danger">{{group.remaining_total}}</span></th>
+					</tr>
+
+					<tr>
+					  <th scope="row">No</th>
+					  <th scope="row">Category</th>
+					  <th scope="row">Budget Amount</th>
+					  <th scope="row">Amount Spent</th>
+					  <th scope="row">Amount Remaining</th>
+					  <th scope="row">Budget Status</th>
+					</tr>
+                  {% for data in datalist %}
+                    {% if data.category == group.category %}
+					<tr>
+					  <th scope="row">{{forloop.counter}}</th>
+					  <td>{{data.name}}</td>
+					  <td>{{data.amount}}</td>
+					  <td>{{data.budget_spent}}</td>
+					  <td>{{data.remaining_budget}}</td>
+					  <td><span {% if data.budget_status == "on budget" %} class="badge badge-success" {%else %} class="badge badge-danger" {% endif %}>
+                      {{data.budget_status}}</span></td>
+					</tr>
+                  {% endif %}
+                  {% endfor %}
+
+                  {% endfor %}
+
+				  </tbody>
+				</table>
+				</div> <!-- end card div -->
+            </div> <!-- end format div -->
+      </div> <!-- end container fluid -->
+
+{% endblock content %}

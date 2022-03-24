@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title%} Spent | Trackings {% endblock title %}
+{% block content %}
+<h1 class="text-center text-primary font-weight-bold">TRACK GENERATOR PAGE</h1>
+<hr/>
+<form method="post">
+    {% csrf_token %}
+    <select name="tracks" id="id_tracks" required>
+        <option value="">.....</option>
+
+    {% for values in select_values %}
+        <option value="{{values.0}}">{{values.1}}</option>
+
+    {% endfor %}
+    </select>
+    <input type="submit" class="btn btn-secondary" value="Generate trackings Category" name="tracks_submit">
+
+<a href="{%url 'create_track'%}">create new track</a>
+    <table>
+        {% for cat,val in categories.items %}
+            {% if val.1 == 1 %}
+            <tr><td>{{cat}}</td><td><input type="checkbox" value="{{val.0}}" name="cat_list" checked></td></tr>
+            {% else %}
+            <tr><td>{{cat}}</td><td><input type="checkbox" value="{{val.0}}" name="cat_list" ></td></tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    <input type="submit" class="btn btn-success" value="Update the Tracking list" name="tracks_submit">
+
+</form>
+{% endblock content %}

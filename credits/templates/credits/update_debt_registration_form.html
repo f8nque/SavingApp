@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{%block title %} Credit | Debt Registration{% endblock title %}
+{% block content %}
+<h3 class="text-success font-weight-bold">UPDATE CREDIT REGISTRATION FORM</h3>
+<p class="text-secondary"> This form is used to registering debts that you owe</p>
+<div>
+<form action="" method="post">
+    {% csrf_token %}
+
+	<div class="row">
+		<div class="form-group col-md-6">
+		    {% if form.credit_date.errors %}
+			    <div class="alert alert-danger">{{form.credit_date.errors}}</div>
+			{% endif %}
+			<label for="reg_date" class="form-control-label"> Registration Date </label>
+			{{form.credit_date}}
+			<!-- <input class="form-control" type ="date" id="reg_date" name="reg_date" value=""/> -->
+		</div>
+
+		<div class="form-group col-md-6">
+
+			 {% if form.credit_agency.errors %}
+			    <div class="alert alert-danger">{{form.credit_agency.errors}}</div>
+			{% endif %}
+			<label for="credit_agency" class="form-control-label"> Credit Agency </label>
+			{{form.credit_agency}}
+			<!--<input class="form-control" type ="text" id="credit_agency" name="reg_date" value=""/> -->
+		</div>
+	</div> <!-- registration date and credit agency row -->
+
+
+	<div class="row">
+		<div class="form-group col-md-6">
+			 {% if form.amount.errors %}
+			    <div class="alert alert-danger">{{form.amount.errors}}</div>
+			{% endif %}
+			<label for="amount" class="form-control-label"> Amount Borrowed</label>
+			{{form.amount}}
+		<!--	<input class="form-control" type ="number" id="amount" name="amount" value=""/> -->
+		</div>
+
+		<div class="form-group col-md-6">
+			 {% if form.credit_service_date.errors %}
+			    <div class="alert alert-danger">{{form.credit_service_date.errors}}</div>
+			{% endif %}
+			<label for="service" class="form-control-label"> Debt Service Date </label>
+			{{form.credit_service_date}}
+			<!--<input class="form-control" type ="date" id="service" name="service" value=""/> -->
+		</div>
+	</div> <!-- Amount borrowed and Debt Service Date -->
+
+	<div class="form-group">
+	     {% if form.comment.errors %}
+			    <div class="alert alert-danger">{{form.comment.errors}}</div>
+			{% endif %}
+		<label for="comment" class="form-control-label"> Comment </label>
+		{{form.comment}}
+	    <!--	<textarea col=12 name="comment" id="comment" class="form-control"> -->
+		</textarea>
+	</div>
+
+	<div>
+		<button type="submit" class="btn btn-outline-primary" > Update </button>
+	</div>
+</form>
+
+</div>
+{% endblock content %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %} Budget | Update Budget Item {%endblock title %}
+
+{%block content %}
+<div class="container-fluid px-1 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+            <h3>BUDGET ITEM ENTRY FORM</h3>
+            <p class="blue-text">Update a new Budget Item in your monthly budget<br> for easier tracking of various budget item.</p>
+            <div class="card">
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{error }}
+                    </div>
+                {% endif %}
+                <h5 class="text-center mb-4">Update Budget Item</h5>
+                <form class="form-card p-0 m-0" action="" method="post">
+                    {% csrf_token %}
+                    <div class=" justify-content-between text-left">
+
+                    <div class="form-group  flex-column d-flex">
+                        	<label class="form-control-label px-3" for="{{form.budget.id_for_label}}">
+                        		Budget<span class="text-danger"> *</span>
+                        	</label>
+                        	{{form.budget}}
+                        </div>
+                     <div class="form-group flex-column d-flex">
+                        <label class="form-control-label px-3" for="{{form.budget_class_item.id_for_label}}">
+                        Budget Class Item
+                        <span class="text-danger"> *</span></label>
+                         {{form.budget_class_item}}
+                    </div>
+
+                    <div class="justify-content-between text-left">
+                        <div class="form-group  flex-column d-flex">
+                        	<label class="form-control-label px-3">
+                        		Amount<span class="text-danger"> *</span>
+                        	</label>
+                            {{form.amount}}
+                        </div>
+                    </div>
+
+                    <div class="justify-content-around">
+                        <div class="form-group"> <button type="submit" class="btn-block btn-primary">Update Budget Item</button> </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content%}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} Accounts | Registration Form {% endblock title%}
+{% block content %}
+{% if non_field_errors %}
+{{non_field_errors}}
+{% endif %}
+<form action="{% url 'registration'%}" method="post">
+  {% csrf_token %}
+  {{form |crispy}}
+  <button type="submit" class ="btn btn-primary">Register</button>
+</form>
+
+
+{% endblock content %}

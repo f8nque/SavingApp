@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{%block title %} Spent | Daily Summary{% endblock title %}
+
+{% block content %}
+<div class="carousel">
+    <h3 class="text-primary text-center font-weight-bold">Totals : {{totals}}</h3>
+    <h3 class="text-danger text-center font-weight-bold">Average : {{average}}</h3>
+    <h4 class="text-center text-success font-weight-bold">Budget Amount : <a href="{%url 'track_list'%}" class="badge badge-success">{{budget_amount}}</a></h4>
+    <h4 class="text-center text-secondary font-weight-bold">Spent Amount : {{spent_amount}}</h4>
+    <h4 class="text-center text-secondary font-weight-bold">Remaining amount is : <strong>{{remaining_amount}}</strong> </h4>
+</div>
+<h1 class="text-center text-primary font-weight-bold">MONTHLY SPENT LIST</h1>
+<hr/>
+<br/>
+
+<table class="table table-stripped table-sm">
+  <tr class="thead-dark">
+    <th>No</th><th>Date</th> <th>day</th><th>Total Amount</th>
+  </tr>
+  {%for dat in data %}
+  <tr>
+    <td>{{forloop.counter}}</td><td>{{dat.0}}</td><td>{{dat.0|date:"l" }}</td><td>{{dat.1}}</td>
+      <td><a class="badge badge-pill badge-primary" href="{% url 'specific_day' dat.0 %}">view</a></td>
+      <td><a class="badge badge-pill badge-danger" href="{% url 'delete_bunch' dat.0%}">delete</a></td>
+  </tr>
+    {% endfor %}
+</table>
+{% endblock content %}

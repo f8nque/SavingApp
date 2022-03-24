@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}
+Accounts | Login
+{% endblock title %}
+{% block content %}
+{% if form.errors %}
+<p>Your username and password didn't match. Please try Again!!!</p>
+{% endif %}
+
+<form action ="{% url 'login'%}" method="post">
+  {% csrf_token %}
+  <table>
+    <tr>
+      <td>{{form.username.label_tag}}</td> <td>{{form.username}}</td>
+    </tr>
+       <tr>
+      <td>{{form.password.label_tag}}</td> <td>{{form.password}}</td>
+    </tr>
+  </table>
+
+  <button type="submit" class="btn btn-primary">Login</button>
+  <input type="hidden" name="next" value="{{next}}" >
+</form>
+
+<p><a href="{% url 'password_reset'%}">Lost Password?</a></p>
+
+{% endblock content %}
