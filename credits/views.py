@@ -88,6 +88,8 @@ class DebtSummaryView(LoginRequiredMixin,View):
         user_id = user.id
         with connection.cursor() as cursor:
             cursor.execute(f"""
+            select final.* 
+            from(
             SELECT distinct
             c.id,
             c.credit_date,
@@ -120,7 +122,8 @@ class DebtSummaryView(LoginRequiredMixin,View):
              group by cs.debt_id_id
              )service on c.id = service.debt_id_id
             where c.voided=0  and c.user_id_id={user_id}
-            order by c.credit_date desc
+            order by c.credit_date desc) final
+            where final.amount_remaining > 0
             """)
             columns = [col[0] for col in cursor.description]
             data = [dict(zip(columns,row)) for row in cursor.fetchall()]
@@ -163,9 +166,181 @@ class DebtSummaryView(LoginRequiredMixin,View):
                 debt_owed =0
             context ={
                 'data':data,
-                'debt': (debt_owed-debt_paid)
+                'debt': (debt_owed-debt_paid),
+                'help_text':"PENDING"
                 }
             return render(request,"credits/debt_summary_list.html",context)
+    def post(self,request):
+        user = User.objects.get(username=self.request.user)
+        user_id = user.id
+        post_data = request.POST['select']
+        if post_data == "SETTLED":
+            with connection.cursor() as cursor:
+                cursor.execute(f"""
+                        select final.* 
+                        from(
+                        SELECT distinct
+                        c.id,
+                        c.credit_date,
+                        c.credit_agency,
+                        c.amount,
+                        c.credit_service_date,
+                        c.comment,
+                        c.paid,
+                        case when (c.paid == 0) and date(c.credit_service_date) < CURRENT_DATE
+                        then "Overdue"
+                        when (c.paid == 0) and (date(c.credit_service_date) >= CURRENT_DATE) then "In Progress"
+                        when c.paid=1 then "Debt Paid"
+                        else "" end as paying_status,
+                        date('now') as n,
+
+                        case when service.amount_paid == c.amount then "Fully Paid"
+                        when service.amount_paid is not null then "Partially Paid"
+                        else "Not Paid" end as service_status,
+                        case when service.amount_paid is NULL then 0
+                         else service.amount_paid end as amount_paid,
+                         case when service.amount_paid is NULL then c.amount
+                         else c.amount - service.amount_paid end as amount_remaining
+                         FROM credits_credit c
+                         left outer join (
+                         SELECT
+                         cs.debt_id_id,
+                         sum(cs.amount) as amount_paid
+                         FROM credits_creditservice cs
+                         where cs.voided=0
+                         group by cs.debt_id_id
+                         )service on c.id = service.debt_id_id
+                        where c.voided=0  and c.user_id_id={user_id}
+                        order by c.credit_date desc) final
+                        where final.amount_remaining <=0
+                        """)
+                columns = [col[0] for col in cursor.description]
+                data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        elif (post_data == 'PENDING'):
+            with connection.cursor() as cursor:
+                cursor.execute(f"""
+                        select final.* 
+                        from(
+                        SELECT distinct
+                        c.id,
+                        c.credit_date,
+                        c.credit_agency,
+                        c.amount,
+                        c.credit_service_date,
+                        c.comment,
+                        c.paid,
+                        case when (c.paid == 0) and date(c.credit_service_date) < CURRENT_DATE
+                        then "Overdue"
+                        when (c.paid == 0) and (date(c.credit_service_date) >= CURRENT_DATE) then "In Progress"
+                        when c.paid=1 then "Debt Paid"
+                        else "" end as paying_status,
+                        date('now') as n,
+
+                        case when service.amount_paid == c.amount then "Fully Paid"
+                        when service.amount_paid is not null then "Partially Paid"
+                        else "Not Paid" end as service_status,
+                        case when service.amount_paid is NULL then 0
+                         else service.amount_paid end as amount_paid,
+                         case when service.amount_paid is NULL then c.amount
+                         else c.amount - service.amount_paid end as amount_remaining
+                         FROM credits_credit c
+                         left outer join (
+                         SELECT
+                         cs.debt_id_id,
+                         sum(cs.amount) as amount_paid
+                         FROM credits_creditservice cs
+                         where cs.voided=0
+                         group by cs.debt_id_id
+                         )service on c.id = service.debt_id_id
+                        where c.voided=0  and c.user_id_id={user_id}
+                        order by c.credit_date desc) final
+                        where final.amount_remaining > 0
+                        """)
+                columns = [col[0] for col in cursor.description]
+                data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        else:
+            with connection.cursor() as cursor:
+                cursor.execute(f"""
+                        select final.* 
+                        from(
+                        SELECT distinct
+                        c.id,
+                        c.credit_date,
+                        c.credit_agency,
+                        c.amount,
+                        c.credit_service_date,
+                        c.comment,
+                        c.paid,
+                        case when (c.paid == 0) and date(c.credit_service_date) < CURRENT_DATE
+                        then "Overdue"
+                        when (c.paid == 0) and (date(c.credit_service_date) >= CURRENT_DATE) then "In Progress"
+                        when c.paid=1 then "Debt Paid"
+                        else "" end as paying_status,
+                        date('now') as n,
+
+                        case when service.amount_paid == c.amount then "Fully Paid"
+                        when service.amount_paid is not null then "Partially Paid"
+                        else "Not Paid" end as service_status,
+                        case when service.amount_paid is NULL then 0
+                         else service.amount_paid end as amount_paid,
+                         case when service.amount_paid is NULL then c.amount
+                         else c.amount - service.amount_paid end as amount_remaining
+                         FROM credits_credit c
+                         left outer join (
+                         SELECT
+                         cs.debt_id_id,
+                         sum(cs.amount) as amount_paid
+                         FROM credits_creditservice cs
+                         where cs.voided=0
+                         group by cs.debt_id_id
+                         )service on c.id = service.debt_id_id
+                        where c.voided=0  and c.user_id_id={user_id}
+                        order by c.credit_date desc) final
+                        """)
+                columns = [col[0] for col in cursor.description]
+                data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        with connection.cursor() as cursor:
+            cursor.execute(f"""
+                        SELECT sum(c.amount) as total_debt
+                         FROM credits_credit c
+                         where c.voided=0 and c.paid=0 and c.user_id_id={user_id}
+                    """)
+            columns = [col[0] for col in cursor.description]
+            debt_owed = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        with connection.cursor() as cursor:
+            cursor.execute(f"""
+                        SELECT sum(s.amount) debt_paid
+                         FROM credits_credit c
+                         inner join (
+                         SELECT
+                        cs.amount,
+                        cs.debt_id_id
+                         FROM credits_creditservice cs
+                         where cs.voided=0
+                         )s on c.id = s.debt_id_id
+                         where c.voided=0 and c.paid=0 and c.user_id_id={user_id}
+                    """)
+            columns = [col[0] for col in cursor.description]
+            debt_paid = [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+        if len(debt_owed) > 0:
+            debt_owed = debt_owed[0]['total_debt']
+        else:
+            debt_owed = 0
+        if len(debt_paid) > 0:
+            debt_paid = debt_paid[0]['debt_paid']
+        else:
+            debt_paid = 0
+        if (debt_paid is None):
+            debt_paid = 0
+        if (debt_owed is None):
+            debt_owed = 0
+        context = {
+            'data': data,
+            'debt': (debt_owed - debt_paid),
+            'help_text':post_data
+        }
+        return render(request, "credits/debt_summary_list.html", context)
 
 
 class DebtServiceHistoryView(LoginRequiredMixin,View):

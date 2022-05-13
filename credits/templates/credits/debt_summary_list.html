@@ -2,8 +2,22 @@
 {%block title %} Credit | Debt Summary{% endblock title %}
 
 {% block content %}
-<h3 class="text-success font-weight-bold">DEBT SUMMARY LIST</h3>
-<h4>Total Debt Owed <span class="badge badge-pill badge-danger">{{debt}}</span></h4>
+
+<h3 class="text-center text-success font-weight-bold">{{help_text}} DEBT SUMMARY LIST</h3>
+<h4 class="text-center">Total Debt Owed <span class="badge badge-pill badge-danger">{{debt}}</span></h4>
+
+	<div>
+	<form action="" method="post">
+		{% csrf_token %}
+		<select name="select" >
+			<option value="">ALL </option>
+			<option value="PENDING">Debt Not Paid</option>
+			<option value="SETTLED">Debt Settled</option>
+		</select>
+		<button type="submit" class="btn btn-outline-primary mx-3">Select Category</button>
+	</form>
+	</div>
+
 <table class="table table-responsive">
 <tr class="table-head">
 	<th>No</th>

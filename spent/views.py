@@ -287,7 +287,11 @@ class IndividualBudgetView(LoginRequiredMixin,View):
             case when ((sp.budget_spent is not NULL) and (bi.amount - sp.budget_spent) < 0) then "surpasses budget"
             else "on budget" end as budget_status,
             bc.name as category,
-            bc.priority
+            bc.priority,
+            round(bi.amount/(bd.budget_total * 1.0)*100,1) as budget_perc,
+			case when round(sp.budget_spent/(bi.amount * 1.0)*100) is null then 0
+			else round(sp.budget_spent/(bi.amount * 1.0)*100,1)
+			end as spent_perc
              from spent_budgetitem bi
             inner join spent_budgetclassitem bci on bi.budget_class_item_id = bci.id
             inner join spent_budgetcategory bc on bci.budget_category_id = bc.id
@@ -325,6 +329,15 @@ class IndividualBudgetView(LoginRequiredMixin,View):
             where b.voided=0 and b.id ={budget}
             group by spent.budget_class_category
             )sp on bci.id = sp.budget_class_category
+            left outer join (
+			select sbi.budget_id,sum(sbi.amount) as budget_total
+             from spent_budgetitem sbi 
+            where sbi.voided = 0 and user_id_id = {user_id}
+            group by sbi.budget_id
+			)bd on bi.budget_id = bd.budget_id
+            
+            
+            
             where bi.voided=0 and bci.voided=0 and bi.user_id_id={user_id} and bci.user_id_id ={user_id}
             and bi.budget_id={budget}
             order by bc.priority
@@ -333,7 +346,11 @@ class IndividualBudgetView(LoginRequiredMixin,View):
             datalist = [dict(zip(columns, row)) for row in cursor.fetchall()]
         with connection.cursor() as cursor:
             cursor.execute(f"""
-            select 
+            select f.*,
+            round(f.spent_total/(f.budget_total*1.0)*100,1) as spent_perc,
+            round(f.budget_total/(bd.budget_total*1.0)*100,1) as budget_perc
+            from(
+            select 		s.budget_id,	
             sum(s.amount) as budget_total,
             sum(s.budget_spent) as spent_total,
             sum(s.remaining_budget) as remaining_total,
@@ -341,6 +358,7 @@ class IndividualBudgetView(LoginRequiredMixin,View):
             from 
             (
             select bi.id,
+			bi.budget_id,
             bci.name,
             bi.amount,
             case when sp.budget_spent is not NULL then sp.budget_spent
@@ -392,7 +410,14 @@ class IndividualBudgetView(LoginRequiredMixin,View):
             and bi.budget_id={budget}
             order by bc.priority) s
             group by s.category
-            order by s.priority
+            order by s.priority) f
+			
+			left outer join (
+			select sbi.budget_id,sum(sbi.amount) as budget_total
+             from spent_budgetitem sbi 
+            where sbi.voided = 0 and user_id_id = {user_id}
+            group by sbi.budget_id
+			)bd on f.budget_id = bd.budget_id
             """)
 
             columns = [col[0] for col in cursor.description]
@@ -1211,5 +1236,47 @@ class SummaryGraphView(LoginRequiredMixin,View):
             }
         return render(request,'credits/summary_graph.html',context)
 
-
+class TrackGraphView(View):
+    query ="""
+    select 
+    t.id,
+    t.start_date,
+    t.end_date,
+    b.*,
+    cast(round(b.amount/(b.track_days * 1.0)) as INTEGER) as budget_average,
+    cast(round(b.track_amount_spent/(b.track_days * 1.0)) as INTEGER) as spent_average
+     from spent_track t
+     inner join (
+     select track.id,
+    track.amount,
+    cast(julianday(track.end_date) - julianday(track.start_date) as INTEGER) as track_days,
+    a.*
+     from spent_track track
+     inner join(
+     
+    select distinct tk.track_id_id as track_id,
+    sum(tk.amount) as track_amount_spent
+    from(
+    select sp.id,
+    sp.amount,
+    tracking.*
+     from spent_spent sp
+     inner join (
+     select 
+    terking.id,
+    terking.spent_id_id,
+    terking.user_id_id,
+    terking.track_id_id
+     from spent_tracking terking
+     inner join spent_track t on terking.track_id_id = t.id 
+     where terking.voided=0 and terking.user_id_id = 1
+     order by t.start_date desc
+     )tracking on sp.id = tracking.spent_id_id
+    where sp.voided =0 and sp.user_id_id = 1) tk
+    group by tk.track_id_id) a
+    on track.id = a.track_id 
+     )b on t.id = b.id
+     order by t.start_date desc
+    
+    """
 # Create your views here.

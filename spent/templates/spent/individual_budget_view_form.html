@@ -9,6 +9,8 @@
 
             <ul class="list-unstyled d-flex flex-column">
             	<li class="h4 ">Budget Name: <span class="badge badge-primary title">{{budgetdata.name}}</span></li>
+
+
             	<li class="h4">Track Date from <span class="badge badge-primary">{{budgetdata.start_date}} </span> To <span class="badge badge-primary">{{budgetdata.end_date}}</span></li>
             	<li class="h4">Budget Amount: <span class="badge badge-success">{{budgetdata.budget_total}}</span></li>
             	<li class="h4">Budget Spent: <span class="badge badge-secondary">{{budgetdata.total_spent}}</span></li>
@@ -21,7 +23,10 @@
 				  <tbody>
                   {% for group in groupdata %}
 				  	<tr>
-					  <th scope="col" class="text-left text-white h5 bg-secondary" colspan="3">{{group.category}}</th>
+
+						<th scope="col" class="text-left text-white h5 bg-secondary" colspan="3">{{group.category}}   <span class="badge badge-primary mx-3">budget%: {{group.budget_perc}}%</span>
+						 <span {% if group.spent_perc >= 100 %} class="badge badge-danger"
+							 {%else  %} class="badge badge-success" {%endif %}>(spent%:  {{group.spent_perc}}%)</span> </th>
 					  <th scope="col" class="text-left text-white  h5 bg-secondary">Budget Amount <span class="badge badge-primary">{{group.budget_total}}</span></th>
 					  <th scope="col" class="text-left text-white h5 bg-secondary">Budget Spent <span class="badge badge-success">{{group.spent_total}}</span></th>
 					  <th scope="col" class="text-left text-white h5 bg-secondary">Remaining Amount <span class="badge badge-danger">{{group.remaining_total}}</span></th>
@@ -39,7 +44,9 @@
                     {% if data.category == group.category %}
 					<tr>
 					  <th scope="row">{{forloop.counter}}</th>
-					  <td>{{data.name}}</td>
+					  <td>{{data.name}} <span class="badge badge-primary">budget%: {{data.budget_perc}}%</span>
+						 <span {% if data.spent_perc >= 100 %} class="badge badge-danger"
+							 {%else  %} class="badge badge-secondary" {%endif %}>(spent%:  {{data.spent_perc}}%)</span> </td>
 					  <td>{{data.amount}}</td>
 					  <td>{{data.budget_spent}}</td>
 					  <td>{{data.remaining_budget}}</td>
