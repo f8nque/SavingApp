@@ -15,8 +15,11 @@ cd SavingsApp
 pip3 install -r requirements.txt
 
 #navigate to SavingsApp folder and update settings.py
+
 cd SavingsApp/
+
 edit the settings.py
+
 ALLOWED_HOSTS = ['localhost','127.0.0.1'] # add the ip address that you want to use.
 
 python3 manage.py migrate
