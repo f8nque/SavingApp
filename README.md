@@ -10,7 +10,7 @@ There is a Savings and Budget Functionality that keep track of various category 
 
 git clone f8nque/SavingApp.git
 
-cd SavingApp
+cd SavingsApp
 
 pip3 install -r requirements.txt
 
