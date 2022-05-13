@@ -22,3 +22,4 @@ python3 manage.py createsuperuser
 python3 manage.py runserver 127.0.0.1:8080
 
 
+Go to Browser and login using the password created using the password created using the createsuperuser command.
