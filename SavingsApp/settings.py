@@ -25,7 +25,7 @@ SECRET_KEY = '4)z35ip(e)5tf1dh%38elk#bkt9ritrjucqfh&8%6m9iaw&kem'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['gachau.pythonanywhere.com','127.0.0.1']
+ALLOWED_HOSTS = ['localhost','127.0.0.1']
 
 
 # Application definition
@@ -127,7 +127,6 @@ STATIC_URL = '/static/'
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
 MEDIA_ROOT = '/home/gachau/SavingsApp/media'
 MEDIA_URL = '/media/'
-#STATIC_ROOT = '/home/gachau/SavingsApp/static'
 STATIC_URL = '/static/'
 
 
